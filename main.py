@@ -1,23 +1,28 @@
-from flask import *
-import json, time
+from flask import Flask, request, render_template
+# import json, time
 
 app = Flask(__name__)
+#template engine. You commonly use template engines for web templates that receive dynamic content from the back end and render it as a static page in the front end.
 
-@app.route('/', methods = ['GET'])
-def home_page():
-    data_set = {'Page':'Home', 'Message': 'Successfully loaded the Home page', 'Timestamp': time.time()}
-    json_dump = json.dumps(data_set)
+@app.route('/patato')
+def welcome():
+    return 'This is my first Flask app! yay'
 
-    return json_dump
+@app.route('/')
+def rootpage():
+    return render_template("index.html")
 
-@app.route('/user/', methods = ['GET'])
-def request_page():
-    user_query = str(request.args.get('user'))
+@app.route('/bob')
+def bobpage():
+    return 'Yo Bob! Whats a happening!!'
 
-    data_set = {'Page':'Home', 'Message': 'Successfully loaded the Home page', 'Timestamp': time.time()}
-    json_dump = json.dumps(data_set)
-
-    return json_dump
-
-if __name__ == '__main__':
-    app.run(port=7777)
+@app.route('/method', methods= ['GET'])
+def method():
+    if request.method == 'POST':
+        return "You have used a Post request"
+    else:
+        return "I reckon you are probably using a get request!"
+    
+app.run()
+# if __name__ == '__main__':
+#     app.run(port=7777)
