@@ -2,7 +2,8 @@ from flask import Flask, request, render_template # type: ignore
 # import json, time
 
 app = Flask(__name__)
-#template engine. You commonly use template engines for web templates that receive dynamic content from the back end and render it as a static page in the front end.
+#template engine. You commonly use template engines for web templates that receive dynamic content
+#  from the back end and render it as a static page in the front end.
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
