@@ -1,23 +1,19 @@
-from flask import *
-import json, time
+from flask import Flask, request, render_template # type: ignore
+# import json, time
 
 app = Flask(__name__)
+#template engine. You commonly use template engines for web templates that receive dynamic content from the back end and render it as a static page in the front end.
 
-@app.route('/', methods = ['GET'])
-def home_page():
-    data_set = {'Page':'Home', 'Message': 'Successfully loaded the Home page', 'Timestamp': time.time()}
-    json_dump = json.dumps(data_set)
+@app.route('/', methods=['GET', 'POST'])
+def index():
+    bmi = ' '
+    if request.method == 'POST' and 'weight' in request.form:
+        weight = float(request.form.get('weight'))
+        height = float(request.form.get('height'))
+        bmi= calc_bmi(weight, height)
+    return render_template("index.html",
+                           bmi=bmi)
 
-    return json_dump
-
-@app.route('/user/', methods = ['GET'])
-def request_page():
-    user_query = str(request.args.get('user'))
-
-    data_set = {'Page':'Home', 'Message': 'Successfully loaded the Home page', 'Timestamp': time.time()}
-    json_dump = json.dumps(data_set)
-
-    return json_dump
-
-if __name__ == '__main__':
-    app.run(port=7777)
+def calc_bmi(weight, height):
+    return round(( weight / ((height / 100) ** 2)), 2)
+app.run()
